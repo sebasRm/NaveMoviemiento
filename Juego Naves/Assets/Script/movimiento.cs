@@ -67,7 +67,7 @@ public class movimiento : MonoBehaviour
 
     void disparo()
     {
-        if (Input.GetKey(KeyCode.E))
+        if (Input.GetKey(KeyCode.Space))
         {
             Instantiate(disparoUno, transform.position + new Vector3(0, 0.5f, -1.16f), Quaternion.identity);
         }
