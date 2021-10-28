@@ -8,7 +8,7 @@ public class movimiento : MonoBehaviour
     [SerializeField]
     public string estadoNave = "mi estado";
 
-    public float velocidadNave = 10.0f;
+    public float velocidadNave;
     public float velocidadNaveLados = 3.0f;
 
     public float movimientoHorizontal;
@@ -16,28 +16,34 @@ public class movimiento : MonoBehaviour
 
     public int vidasNave = 3;
 
-    public GameObject disparoUno;
+    private bool powerUpvelocidad = false;
+
+    // public GameObject disparoUno;
 
     void Start()
     {
-       // transform.position = new Vector3(0.614f, -0.463f, -2.35f);
-      //  Debug.Log(estadoNave);
+        // transform.position = new Vector3(0.614f, -0.463f, -2.35f);
+        //  Debug.Log(estadoNave);
+        velocidadNave = 10.0f;
     }
 
 
     // Update is called once per frame
     void Update()
     {
-        moviemintoNave();
+        //moviemintoNave();
+        // disparo();
 
-        disparo();
-
+        float Horizontal = Input.GetAxis("Horizontal") * velocidadNave * Time.deltaTime;
+        print(Horizontal);
+        transform.Translate(Horizontal, 0, 0);
+        aumentarVelocidad();
 
 
     }
 
 
-    void moviemintoNave()
+   /* void moviemintoNave()
     {
         movimientoHorizontal = Input.GetAxis("Horizontal");
         transform.Translate(Vector3.right * Time.deltaTime * velocidadNaveLados * movimientoHorizontal);
@@ -62,21 +68,51 @@ public class movimiento : MonoBehaviour
         {
             transform.position = new Vector3(transform.position.x, -0.5f, -1.6f);
         }
-    }
+    }*/
 
-
-    void disparo()
+    void aumentarVelocidad()
     {
-        if (Input.GetKey(KeyCode.Space))
+
+        float horizontal = Input.GetAxis("Horizontal");
+
+        if (powerUpvelocidad == true)
         {
-            Instantiate(disparoUno, transform.position + new Vector3(0, 0.5f, -1.16f), Quaternion.identity);
+
+            transform.Translate(Vector3.right * velocidadNave * 5.0f * horizontal * Time.deltaTime);
         }
-        else if(Input.GetKey(KeyCode.T))
+        else
         {
-            Instantiate(disparoUno, transform.position + new Vector3(0, 0.5f, -1.16f), Quaternion.identity);
-            Instantiate(disparoUno, transform.position + new Vector3(0.2f, 0.1f, -1.16f), Quaternion.identity);
-            Instantiate(disparoUno, transform.position + new Vector3(-0.2f, 0.1f, -1.16f), Quaternion.identity);
+            transform.Translate(Vector3.right * velocidadNave * horizontal * Time.deltaTime);
+
+
         }
+
     }
+
+    public void Poweer()
+    {
+        powerUpvelocidad = true;
+        StartCoroutine(powerDown());
+    }
+
+    IEnumerator powerDown()
+    {
+        yield return new WaitForSeconds(5.0f);
+        powerUpvelocidad = false;
+    }
+
+    /* void disparo()
+     {
+         if (Input.GetKey(KeyCode.Space))
+         {
+             Instantiate(disparoUno, transform.position + new Vector3(0, 0.5f, -1.16f), Quaternion.identity);
+         }
+         else if(Input.GetKey(KeyCode.T))
+         {
+             Instantiate(disparoUno, transform.position + new Vector3(0, 0.5f, -1.16f), Quaternion.identity);
+             Instantiate(disparoUno, transform.position + new Vector3(0.2f, 0.1f, -1.16f), Quaternion.identity);
+             Instantiate(disparoUno, transform.position + new Vector3(-0.2f, 0.1f, -1.16f), Quaternion.identity);
+         }
+     }*/
 
 }
